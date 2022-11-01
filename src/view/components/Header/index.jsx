@@ -48,21 +48,6 @@ const Header = () => {
         justifyContent='center'
         alignItems='center'
       >
-        <Grid item >
-          {/* TODO connect to pages */}
-          <Link to="/events" className={classes.menuButton}>
-            <Typography>
-              EVENTS
-            </Typography>
-          </Link>
-        </Grid>
-        <Grid item>
-          <Link to="/market" className={classes.menuButton}>
-            <Typography>
-              MARKET
-            </Typography>
-          </Link>
-        </Grid>
         <Grid item>
           <Link to="/about" className={classes.menuButton}>
             <Typography>

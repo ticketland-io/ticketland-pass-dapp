@@ -1,8 +1,6 @@
 import React from 'react'
 import {Grid, Typography} from '@mui/material'
 import styles from './styles'
-import ImageCarousel from './imageCarousel'
-import CarouselEvent from './carouselEvent'
 import LoginForm from './loginForm'
 
 const LogIn = () => {
@@ -24,26 +22,6 @@ const LogIn = () => {
               <Typography className={classes.subText}>
                 Ticketland is a ticketing and invitation cards platform and infrastructure powered by blockchain and NFT technologies.
               </Typography>
-            </Grid>
-          </Grid>
-          <Grid container >
-            <Grid mt={8} mb={5} item xs={12} className={classes.newEventsTextItem}>
-              <Typography variant='h3' className={classes.newEventsText}>
-                Newest events
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <ImageCarousel hideIndicators>
-                <CarouselEvent>
-                  <img src="https://images.pexels.com/photos/711009/pexels-photo-711009.jpeg?cs=srgb&dl=pexels-helena-lopes-711009.jpg&fm=jpg" />
-                </CarouselEvent>
-                <CarouselEvent>
-                  <img src="https://images.pexels.com/photos/301703/pexels-photo-301703.jpeg?cs=srgb&dl=pexels-pixabay-301703.jpg&fm=jpg" />
-                </CarouselEvent>
-                <CarouselEvent>
-                  <img src="https://images.pexels.com/photos/935970/pexels-photo-935970.jpeg?cs=srgb&dl=pexels-nappy-935970.jpg&fm=jpg" />
-                </CarouselEvent>
-              </ImageCarousel>
             </Grid>
           </Grid>
         </Grid>

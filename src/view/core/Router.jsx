@@ -29,7 +29,6 @@ const Router = props => {
           <Routes>
             <Route exact strict path='/' element={<Home />} />
             <Route exact strict path='/login' element={<Login />} />
-            <Route exact strict path='/about' element={<About />} />
           </Routes>
         </div>
         <Footer />

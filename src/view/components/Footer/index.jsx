@@ -34,12 +34,6 @@ const Footer = () => {
           </Grid>
           <Grid item container justifyContent='space-between'>
             <Grid item>
-              <Link to='/new' className={classes.menuButton}>
-                <Typography variant='footer' className={classes.footerMenu}>Events</Typography>
-              </Link>
-              <Link to='/market' className={classes.menuButton}>
-                <Typography variant='footer' className={classes.footerMenu}>Market</Typography>
-              </Link>
               <Link to='/about' className={classes.menuButton}>
                 <Typography variant='footer' className={classes.footerMenu}>About</Typography>
               </Link>

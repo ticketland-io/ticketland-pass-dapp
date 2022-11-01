@@ -3,6 +3,7 @@ import {render} from 'react-dom'
 import App from './core/App'
 import Store from './core/Store'
 import packageJson from '../../package.json'
+import './index.css'
 
 window.TICKETLAND_PASS_VERSION = packageJson.version
 

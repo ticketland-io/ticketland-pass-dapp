@@ -6,7 +6,7 @@
   "author": "Pavlos Polianidis <info@ticketland.io> (https://ticketland.io)",
   "license": "BUSL-1.1",
   "scripts": {
-    "dev": "NODE_ENV=development PORT=3000 ./node_modules/.bin/webpack serve",
+    "dev": "NODE_ENV=development PORT=3002 ./node_modules/.bin/webpack serve",
     "build": "rm -rf dist & NODE_ENV=production NODE_OPTIONS='--max-old-space-size=2048' ./node_modules/.bin/webpack"
   },
   "dependencies": {

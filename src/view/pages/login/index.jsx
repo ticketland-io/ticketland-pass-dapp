@@ -13,7 +13,7 @@ const LogIn = () => {
       const urlSearchParams = new URLSearchParams(window.location.search)
       const qs = Object.fromEntries(urlSearchParams.entries())
 
-      window.location.href = qs['return-url']
+      window.location.href = `${process.env.TICKETLAND_PASS_URL}/${qs['return-url']}`
     }
   }, [state.user])
 

@@ -12,8 +12,15 @@ const LogIn = () => {
     if(state.user) {
       const urlSearchParams = new URLSearchParams(window.location.search)
       const qs = Object.fromEntries(urlSearchParams.entries())
-
-      window.location.href = `${process.env.TICKETLAND_PASS_URL}/${qs['return-url']}`
+      
+      const url = Object
+      .entries(qs)
+      .filter(([k, _]) => k != 'return-url')
+      .reduce((acc, [k, v], i) => {
+        return `${acc}&${k}=${v}`
+      }, `${qs['return-url']}`)
+  
+      window.location.href = `${process.env.TICKETLAND_PASS_URL}/${url}`
     }
   }, [state.user])
 

@@ -10,3 +10,4 @@ src/.npmrc
 dist/
 build
 .npmrc
+.DevNotes.md

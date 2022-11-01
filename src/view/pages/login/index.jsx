@@ -1,12 +1,22 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Grid, Typography} from '@mui/material'
-import styles from './styles'
+import {Context} from '../../core/Store'
 import LoginForm from './loginForm'
+import styles from './styles'
 
 const LogIn = () => {
   const classes = styles()
+  const [state, _] = useContext(Context)
 
-  // TODO fetch paginated events for the carousel
+  useEffect(() => {
+    if(state.user) {
+      const urlSearchParams = new URLSearchParams(window.location.search)
+      const qs = Object.fromEntries(urlSearchParams.entries())
+
+      window.location.href = qs['return-url']
+    }
+  }, [state.user])
+
   return (
     <div className={classes.root}>
       <div className={classes.backgroundColor} />

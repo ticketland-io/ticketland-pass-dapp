@@ -22,7 +22,7 @@
     "@ticketland-io/eutopic-firebase-auth": "0.1.22",
     "@ticketland-io/eutopic-solana-wallet": "0.1.22",
     "@ticketland-io/eutopic-web-enclave": "0.1.22",
-    "@ticketland-io/ticket-verification-js": "0.1.5",
+    "@ticketland-io/ticket-verification-js": "0.1.6",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "crypto-browserify": "^3.12.0",

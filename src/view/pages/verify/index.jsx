@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react'
 import {verifyTicket} from '@ticketland-io/ticket-verification-js'
 import {Context} from '../../core/Store'
 import {getGuild} from '../../../services/guild'
+import {getGuild} from '../../../services/guild'
 
 const Verify = props => {
   const [state, _] = useContext(Context)
@@ -15,7 +16,7 @@ const Verify = props => {
       if(currentUser) {
         const run = async () => {
           const guild = await getGuild(state.firebase, qs.guild_id)
-          const result = await verifyTicket(
+          const verificationResult = await verifyTicket(
             guild[0].event_id,
             process.env.TICKET_VERIFICATION_WIDGET,
             process.env.TICKETLAND_VERIFIER_KEY,
@@ -25,7 +26,7 @@ const Verify = props => {
           )
     
           // At this point we know that the verification was successful
-          console.log('Verification result', result)
+          console.log('Verification result', verificationResult)
         }
     
         run()

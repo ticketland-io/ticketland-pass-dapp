@@ -2,7 +2,8 @@ import React, {useContext, useEffect} from 'react'
 import {verifyTicket} from '@ticketland-io/ticket-verification-js'
 import {Context} from '../../core/Store'
 import {getGuild} from '../../../services/guild'
-import {getGuild} from '../../../services/guild'
+import {submitTicketVerification} from '../../../services/account'
+
 
 const Verify = props => {
   const [state, _] = useContext(Context)
@@ -10,7 +11,7 @@ const Verify = props => {
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search)
     const qs = Object.fromEntries(urlSearchParams.entries())
-    const codeChallenge = `${qs.discord_uid}:${qs.guild_id}`
+    const codeChallenge = `${qs.discord_uid}:${qs.guild_id}:${qs.sig}`
 
     state.firebase.onUserChanged(currentUser => {
       if(currentUser) {
@@ -26,7 +27,7 @@ const Verify = props => {
           )
     
           // At this point we know that the verification was successful
-          console.log('Verification result', verificationResult)
+          await submitTicketVerification(state.firebase, verificationResult)
         }
     
         run()

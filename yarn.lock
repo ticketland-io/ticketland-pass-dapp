@@ -1967,10 +1967,10 @@
     "@ticketland-io/eutopic-indexdb-storage" "^0.1.13"
     bip39 "^3.0.4"
 
-"@ticketland-io/ticket-verification-js@0.1.7":
-  version "0.1.7"
-  resolved "https://npm.pkg.github.com/download/@ticketland-io/ticket-verification-js/0.1.7/098c305cb043f6920966697d806a6312de640b51#098c305cb043f6920966697d806a6312de640b51"
-  integrity sha512-LD88IZVFXo8USkWybsRxNs4ww7t0sKXt79o/Xca+MIyUEoYlprOK9onwGpAmGxMYivMbKduGeNBwF/IDSbT5VQ==
+"@ticketland-io/ticket-verification-js@0.1.8":
+  version "0.1.8"
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/ticket-verification-js/0.1.8/8a6d222dd56d8ecd2b9eff9fb07ff53b4f5d1757#8a6d222dd56d8ecd2b9eff9fb07ff53b4f5d1757"
+  integrity sha512-IG2vomYK8mRZGkrlz0/+wKA2sutu1xCkxgQGRWqx5GvZOFJoAb15HK9hOpF3me3qU+HOiC1sIp9wSCLQPYZw4Q==
   dependencies:
     borsh "^0.7.0"
     bs58 "^5.0.0"

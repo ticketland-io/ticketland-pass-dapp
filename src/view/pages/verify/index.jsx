@@ -18,7 +18,7 @@ const Verify = props => {
         const run = async () => {
           const guild = await getGuild(state.firebase, qs.guild_id)
           const verificationResult = await verifyTicket(
-            guild[0].event_id,
+            guild.event_id,
             process.env.TICKET_VERIFICATION_WIDGET,
             process.env.TICKETLAND_VERIFIER_KEY,
             process.env.TICKET_VERIFICATION_WIDGET,

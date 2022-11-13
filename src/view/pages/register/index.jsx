@@ -16,7 +16,7 @@ const name = props => {
           window.location.href = `${process.env.DISCORD_LINK}/${qs.guild_id}/${qs.channel_id}`
         }
   
-        run()
+        state.user && run()
         .then(() => {})
         .catch(error => console.log('>>>>>', error))
       } else {

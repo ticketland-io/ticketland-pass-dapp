@@ -9,3 +9,13 @@ export const getGuild = async (firebase, guild_id) => {
     },
   )
 }
+
+export const getUserGuild = async (firebase) => {
+  return await fetch(
+    `${process.env.TICKETLAND_PASS_API}/discord/guilds`,
+    'GET',
+    {
+      headers: createBearerHeader(firebase.accessToken()),
+    },
+  )
+}

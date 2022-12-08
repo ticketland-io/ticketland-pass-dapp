@@ -43,15 +43,18 @@ const MenuProps = {
   },
 };
 
+const isEmpty = (obj) => Object.keys(obj).length < 1;
+
 const Event = () => {
+  const [rolesArray, setRolesArray] = useState([[], [], [], [], [], []])
   const [state, dispatch] = useContext(Context)
   const {eventId} = useParams()
-  const [rolesArray, setRolesArray] = useState([[], [], [], []])
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [isChanged, setIsChanged] = useState(true)
+  const [isChanged, setIsChanged] = useState(false)
   const [guilds, setGuilds] = useState([])
   const [event, setEvent] = useState({})
   const [guild, setGuild] = useState({})
+  const [selectedGuild, setSelectedGuild] = useState({})
   const [roles, setRoles] = useState([])
   const [newRoles, setNewRoles] = useState([])
   const classes = styles()
@@ -80,6 +83,7 @@ const Event = () => {
           setRolesArray(event[0].sales.map((ticket, index) => guildTicketRoles[index].roles))
           setNewRoles(guildTicketRoles)
           setGuild(guild)
+          setSelectedGuild(guild.guild_id)
         }
         catch (error) {
           setGuild({})
@@ -91,10 +95,10 @@ const Event = () => {
 
   useEffect(() => {
     const run = async () => {
-      if (Object.keys(guild).length > 0) {
-        const roles = await fetchGuildRoles(state.firebase, guild.guild_id)
+      if (!isEmpty(guild)) {
+        const roles = await fetchGuildRoles(state.firebase, selectedGuild)
 
-        // setRolesArray(event[0].sales.map(() => []))
+        setRolesArray(event[0].sales.map(() => []))
         setRoles(roles.map((role) => role.name))
       }
     }
@@ -103,8 +107,9 @@ const Event = () => {
 
 
   const handleSelectChange = async evt => {
-    setIsChanged(false)
+    setIsChanged(true)
     setGuild(evt.target.value)
+    setSelectedGuild(evt.target.value)
   }
 
   const handleMultipleSelectChange = (event, index) => {
@@ -115,7 +120,7 @@ const Event = () => {
 
     copy[index] = (typeof value === 'string' ? value.split(',') : value)
     setRolesArray(copy)
-    setIsChanged(false)
+    setIsChanged(true)
   }
 
   const onSubmit = () => {
@@ -127,7 +132,7 @@ const Event = () => {
         submitGuildTicketRoles(
           state.firebase,
           {
-            guild_id: guild.guild_id,
+            guild_id: selectedGuild,
             roles: rolesArray[index],
             ticket_type_index: ticket.ticket_type_index
           }
@@ -135,10 +140,39 @@ const Event = () => {
 
       }
     })
-    newRoles.length < 1 && updateEventGuild(state.firebase, guild.guild_id, eventId)
-    setIsChanged(true)
+    newRoles.length < 1 && updateEventGuild(state.firebase, selectedGuild, eventId)
+    setIsChanged(false)
     setButtonLoading(false)
   }
+
+  const renderSelectRoles = (index) => (
+    <FormControl sx={{m: 1, width: 300}}>
+      <Select
+        multiple
+        disabled={Object.keys(selectedGuild).length === 0}
+        value={rolesArray[index]}
+        onChange={(value) => handleMultipleSelectChange(value, index)}
+        input={<OutlinedInput label="Roles" />}
+        renderValue={(selected) => (
+          <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
+            {selected.map((value) => (
+              <Chip color='secondary' key={value} label={value} />
+            ))}
+          </Box>
+        )}
+        MenuProps={MenuProps}
+      >
+        {roles.map((role) => (
+          <MenuItem
+            key={role}
+            value={role}
+          >
+            {role}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
 
   return (
     <Grid container className={classes.container}>
@@ -147,7 +181,7 @@ const Event = () => {
       </Grid>
       <Grid item container justifyContent='space-between'>
         <Grid item className={classes.eventName}>
-          <Typography variant='subtitle'>
+          <Typography variant='cardSubtitle'>
             {event[0]?.name}
           </Typography>
         </Grid>
@@ -158,11 +192,11 @@ const Event = () => {
             </InputLabel>
             <Select
               label='Guild'
-              value={guild}
+              value={selectedGuild}
               onChange={handleSelectChange}
             >
-              {guilds.map((guild) =>
-                <MenuItem value={guild}>{guild.name}</MenuItem>
+              {guilds.map((g) =>
+                <MenuItem key={g.guild_id} value={g.guild_id}>{g.name}</MenuItem>
               )}
             </Select>
           </FormControl>
@@ -185,32 +219,7 @@ const Event = () => {
                   <Typography variant='body1'>{ticket.ticket_type_name}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <FormControl sx={{m: 1, width: 300}}>
-                    <Select
-                      multiple
-                      disabled={Object.keys(guild).length === 0}
-                      value={rolesArray[index]}
-                      onChange={(value) => handleMultipleSelectChange(value, index)}
-                      input={<OutlinedInput label="Roles" />}
-                      renderValue={(selected) => (
-                        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                          {selected.map((value) => (
-                            <Chip color='secondary' key={value} label={value} />
-                          ))}
-                        </Box>
-                      )}
-                      MenuProps={MenuProps}
-                    >
-                      {roles.map((role) => (
-                        <MenuItem
-                          key={role}
-                          value={role}
-                        >
-                          {role}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  {!isEmpty(selectedGuild) && renderSelectRoles(index)}
                 </TableCell>
               </TableRow>
             ))}
@@ -222,9 +231,7 @@ const Event = () => {
           variant='contained'
           fullWidth
           onClick={onSubmit}
-          disabled={isChanged}
-          // disabled={viewState === VIEW_STATES.NOT_STARTED}
-          // className={classes.button}
+          disabled={!isChanged}
           loading={buttonLoading}
         >
           Submit

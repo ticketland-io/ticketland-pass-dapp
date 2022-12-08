@@ -66,7 +66,7 @@ const Header = () => {
       {/* TODO check later if removed or add functionality*/}
       <Grid container item xs={4} justifyContent='flex-end' alignItems='center' className={classes.innerContainer}>
         {loggedInUser ? (
-          <Grid item container flexDirection='row' justifyContent='center' alignItems='center'>
+          <Grid item container flexDirection='row' justifyContent='flex-end' alignItems='center'>
             <IconButton>
               <img src={notification} className={classes.bellIcon} />
             </IconButton>

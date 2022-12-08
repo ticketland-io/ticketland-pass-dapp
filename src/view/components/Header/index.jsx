@@ -55,6 +55,13 @@ const Header = () => {
             </Typography>
           </Link>
         </Grid>
+        <Grid item>
+          <Link to="/events" className={classes.menuButton}>
+            <Typography>
+              EVENTS
+            </Typography>
+          </Link>
+        </Grid>
       </Grid>
       {/* TODO check later if removed or add functionality*/}
       <Grid container item xs={4} justifyContent='flex-end' alignItems='center' className={classes.innerContainer}>

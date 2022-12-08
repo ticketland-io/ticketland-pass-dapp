@@ -4,6 +4,7 @@ const colors = {
   black: '#000000',
   white: '#ffffff',
   darkGray: '#0B0C0E',
+  gray97: '#F8F8F8',
   gray98: '#FAFAFA',
   gray100: '#F2F2F3',
   gray200: '#C9CACC',
@@ -138,7 +139,6 @@ export const getTheme = () => createTheme({
       lineHeight: '36px',
     },
     subtitle2: {
-      color: colors.gray300,
       fontSize: '16px',
       fontWeight: '500',
       lineHeight: '24px',
@@ -395,7 +395,31 @@ export const getTheme = () => createTheme({
         },
         endIcon: {
           fontSize: 12
+        },
+      }
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        border: 0,
+        root: {
+          '&:nth-of-type(odd)': {
+            backgroundColor: colors.gray97,
+          }
         }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderColor: colors.gray97
+        }
+      }
+    }
+  },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        backgroundColor: colors.error
       }
     }
   }

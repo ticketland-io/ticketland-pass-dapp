@@ -1,6 +1,5 @@
 import makeStyles from '@mui/styles/makeStyles'
 
-
 export default makeStyles(theme => ({
   tableContainer: {
     display: 'flex',

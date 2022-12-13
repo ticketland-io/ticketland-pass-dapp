@@ -30,9 +30,9 @@ export const fetchUserGuilds = async (firebase) => {
   )
 }
 
-export const createGuildTicketRoles = async (firebase, guildTicketRoles) => {
+export const createGuildAcl = async (firebase, guildTicketRoles) => {
   return await fetch(
-    `${process.env.TICKETLAND_PASS_API}/discord/guilds/guild-acl`,
+    `${process.env.TICKETLAND_PASS_API}/discord/guild-acl`,
     'POST',
     {
       headers: createBearerHeader(await firebase.accessToken()),
@@ -43,7 +43,7 @@ export const createGuildTicketRoles = async (firebase, guildTicketRoles) => {
 
 export const updateEventGuild = async (firebase, guild_id, event_id) => {
   return await fetch(
-    `${process.env.TICKETLAND_PASS_API}/discord/guilds/${guild_id}/event`,
+    `${process.env.TICKETLAND_PASS_API}/discord/guilds/${guild_id}`,
     'PUT',
     {
       headers: createBearerHeader(await firebase.accessToken()),
@@ -53,8 +53,11 @@ export const updateEventGuild = async (firebase, guild_id, event_id) => {
 }
 
 export const fetchGuildAcls = async (firebase, guild_id) => {
+  const params = new URLSearchParams({
+    guild_id
+  })
   return await fetch(
-    `${process.env.TICKETLAND_PASS_API}/discord/guilds/${guild_id}/guild-acls`,
+    `${process.env.TICKETLAND_PASS_API}/discord/guild-acls?${params}`,
     'GET',
     {
       headers: createBearerHeader(await firebase.accessToken()),
@@ -64,7 +67,7 @@ export const fetchGuildAcls = async (firebase, guild_id) => {
 
 export const updateGuildAcl = async (firebase, guild_acl_id, roles) => {
   return await fetch(
-    `${process.env.TICKETLAND_PASS_API}/discord/guilds/${guild_acl_id}`,
+    `${process.env.TICKETLAND_PASS_API}/discord/guild-acls/${guild_acl_id}`,
     'PUT',
     {
       headers: createBearerHeader(await firebase.accessToken()),

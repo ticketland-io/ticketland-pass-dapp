@@ -43,7 +43,7 @@ const MenuProps = {
 };
 
 const areEqual = (allRoles, guildAclRoles = []) => allRoles.length === guildAclRoles.length
-  && roles.every(element => guildAclRoles.includes(element))
+  && allRoles.every(element => guildAclRoles.includes(element))
 
 const isEmpty = (obj) => Object.keys(obj).length < 1;
 
@@ -52,8 +52,7 @@ const Event = () => {
   const [state, dispatch] = useContext(Context)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [isGuildDisabled, setIsGuildDisabled] = useState(false)
-  const [isChanged, setIsChanged] = useState(false)
-  const [roles, setRoles] = useState([[]])
+  const [roles, setRoles] = useState([])
   const [guilds, setGuilds] = useState([])
   const [event, setEvent] = useState({})
   const [guild, setGuild] = useState({})
@@ -77,15 +76,19 @@ const Event = () => {
 
   useEffect(() => {
     const run = async () => {
-      if (guilds.length > 0 && state.user) {
+      if (guilds.length > 0 && state.user && !isEmpty(event)) {
         try {
-          const guild = guilds.filter(g => g.event_id === eventId)[0]
-          const guildAcls = await fetchGuildAcls(state.firebase, guild.guild_id)
+          const currentGuild = guilds.find(g => g.event_id === eventId)
+          const newGuildAcls = await fetchGuildAcls(state.firebase, currentGuild.guild_id)
 
-          setRoles(event.sales.map((ticket, index) => guildAcls[index].roles))
-          setGuildAcls(guildAcls)
-          setGuild(guild.guild_id)
-          !isEmpty(guild) && setIsGuildSelected(true)
+          setRoles(event.sales.map((sale) =>
+            newGuildAcls?.find(guild_acl =>
+              guild_acl.ticket_type_index === sale.ticket_type_index
+            )?.roles
+          ))
+          setGuildAcls(newGuildAcls)
+          setGuild(currentGuild.guild_id)
+          !isEmpty(currentGuild) && setIsGuildSelected(true)
         }
         catch (error) {
           setGuild({})
@@ -94,11 +97,11 @@ const Event = () => {
     }
 
     run()
-  }, [state.firebase, guilds])
+  }, [state.firebase, state.user, guilds, event])
 
   useEffect(() => {
     const run = async () => {
-      if (!isEmpty(guild)) {
+      if (!isEmpty(guild) && state.user) {
         setIsGuildDisabled(true)
         const roles = await fetchGuildRoles(state.firebase, guild)
 
@@ -107,64 +110,86 @@ const Event = () => {
     }
 
     run()
-  }, [state.firebase, guild])
+  }, [state.firebase, guild, state.user])
 
 
   const handleSelectChange = async evt => {
-    setIsChanged(true)
     setGuild(evt.target.value)
   }
 
-  const handleMultipleSelectChange = (event, index) => {
+  const handleMultipleSelectChange = (event, ticket_type_index) => {
     const {
       target: {value},
-    } = event;
+    } = event
     let copy = [...roles]
 
-    copy[index] = (typeof value === 'string' ? value.split(',') : value)
+    copy[ticket_type_index] = value
     setRoles(copy)
-    setIsChanged(true)
   }
 
   const onSubmit = async () => {
     setButtonLoading(true)
-    await Promise.all(
-      event?.sales.map(async (sale, index) => {
-        const guildAcl = guildAcls.find(g => g.ticket_type_index === sale.ticket_type_index)
+    const updatedGuildAcls = await Promise.all(
+      event?.sales.map(async (sale, ticket_type_index) => {
+        const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
 
-        if (typeof guildAcl?.roles !== 'undefined' && !areEqual(roles[index], guildAcl?.roles)) {
-          updateGuildAcl(state.firebase, guildAcl.id, roles[index])
+        if (guildAcls[guildAclIndex]?.roles && !areEqual(roles[ticket_type_index], guildAcls[guildAclIndex]?.roles)) {
+          const guildAclResult = await updateGuildAcl(state.firebase, guildAcls[guildAclIndex].id, roles[ticket_type_index])
 
-        } else if (!guilds.filter(g => g.event_id === eventId)[0]) {
+          return guildAclResult
+
+        } else if (guildAclIndex === -1 && roles[ticket_type_index]?.length > 0) {
           const guildAclResult = await createGuildAcl(
             state.firebase,
             {
               guild_id: guild,
-              roles: roles[index],
+              roles: roles[ticket_type_index],
               ticket_type_index: sale.ticket_type_index
             }
           )
 
-          setGuildAcls([...guildAcls, guildAclResult])
+          return guildAclResult
         }
+
+        return guildAcls[guildAclIndex]
       })
     )
+    setGuildAcls(updatedGuildAcls)
     if (!isGuildSelected) {
       updateEventGuild(state.firebase, guild, eventId)
       setIsGuildSelected(true)
     }
-    setIsChanged(false)
     setIsGuildDisabled(true)
     setButtonLoading(false)
   }
 
-  const renderSelectRoles = (index) => (
-    (!isEmpty(guild) &&
+  const isSubmitDisabled = () => {
+    if (!isEmpty(event)) {
+      return event?.sales.every((sale, ticket_type_index) => {
+        const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
+        if (guildAcls[guildAclIndex]?.roles && !areEqual(roles[ticket_type_index], guildAcls[guildAclIndex]?.roles)) {
+
+          return false
+
+        } else if (guildAclIndex === -1 && roles[ticket_type_index]?.length > 0) {
+
+          return false
+        }
+
+        return true
+      })
+    } else {
+      return true
+    }
+  }
+
+  const renderSelectRoles = (ticket_type_index) => (
+    !isEmpty(guild) && (
       <FormControl sx={{m: 1, width: 300}}>
         <Select
           multiple
-          value={roles[index] || []}
-          onChange={(value) => handleMultipleSelectChange(value, index)}
+          value={roles[ticket_type_index] || []}
+          onChange={(value) => handleMultipleSelectChange(value, ticket_type_index)}
           input={<OutlinedInput label="Roles" />}
           renderValue={(selected) => (
             <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
@@ -211,7 +236,13 @@ const Event = () => {
               disabled={isGuildDisabled}
             >
               {guilds.map(g =>
-                <MenuItem key={g.guild_id} value={g.guild_id}>{g.name}</MenuItem>
+                <MenuItem
+                  key={g.guild_id}
+                  value={g.guild_id}
+                  disabled={g.event_id}
+                >
+                  {g.name}
+                </MenuItem>
               )}
             </Select>
           </FormControl>
@@ -221,20 +252,20 @@ const Event = () => {
         <Table className={classes.table}>
           <TableHead>
             <TableCell>
-              <Typography variant='subtitle2'>Ticket</Typography>
+              <Typography variant='subtitle2'>Ticket Type</Typography>
             </TableCell>
             <TableCell align="right">
               <Typography variant='subtitle2'>Role</Typography>
             </TableCell>
           </TableHead>
           <TableBody>
-            {event.sales?.map((ticket, index) => (
-              <TableRow key={index}>
+            {event.sales?.map((sale) => (
+              <TableRow key={sale.ticket_type_index}>
                 <TableCell>
-                  <Typography variant='body1'>{ticket.ticket_type_name}</Typography>
+                  <Typography variant='body1'>{sale.ticket_type_name}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  {renderSelectRoles(index)}
+                  {renderSelectRoles(sale.ticket_type_index)}
                 </TableCell>
               </TableRow>
             ))}
@@ -246,7 +277,7 @@ const Event = () => {
           variant='contained'
           fullWidth
           onClick={onSubmit}
-          disabled={!isChanged}
+          disabled={isSubmitDisabled()}
           loading={buttonLoading}
         >
           Submit

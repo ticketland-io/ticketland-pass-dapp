@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+import {Link} from 'react-router-dom'
 import {
   TableBody,
   TableCell,
@@ -10,23 +11,25 @@ import {
   Grid
 } from '@mui/material'
 import {format} from 'date-fns'
-import {useContext} from 'react'
 import {fetchEventsByUser} from '../../../services/events'
 import {Context} from '../../core/Store'
 import SectionTitle from '../../components/SectionTitle'
 import styles from './styles'
-import {Link} from 'react-router-dom';
 
 const Events = props => {
   const [state, dispatch] = useContext(Context)
   const [events, setEvents] = useState([])
   const classes = styles()
 
-
   useEffect(async () => {
-    const events = await fetchEventsByUser(state.firebase)
-    setEvents(events.result)
-  }, [])
+    const run = async () => {
+      if (state.user) {
+        const events = await fetchEventsByUser(state.firebase)
+        setEvents(events.result)
+      }
+    }
+    run()
+  }, [state.firebase, state.user])
 
   return (
     <Grid container>

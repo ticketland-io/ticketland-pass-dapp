@@ -167,16 +167,10 @@ const Event = () => {
     if (!isEmpty(event)) {
       return event?.sales.every((sale, ticket_type_index) => {
         const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
-        if (guildAcls[guildAclIndex]?.roles && !areEqual(roles[ticket_type_index], guildAcls[guildAclIndex]?.roles)) {
+        const hasUpdatedRoles = guildAcls[guildAclIndex]?.roles && !areEqual(roles[ticket_type_index], guildAcls[guildAclIndex]?.roles)
+        const isNewGuildAcl = guildAclIndex === -1 && roles[ticket_type_index]?.length > 0
 
-          return false
-
-        } else if (guildAclIndex === -1 && roles[ticket_type_index]?.length > 0) {
-
-          return false
-        }
-
-        return true
+        return (!hasUpdatedRoles && !isNewGuildAcl)
       })
     } else {
       return true

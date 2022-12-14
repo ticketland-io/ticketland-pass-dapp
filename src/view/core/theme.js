@@ -402,7 +402,7 @@ export const getTheme = () => createTheme({
       styleOverrides: {
         border: 0,
         root: {
-          '&:nth-of-type(odd)': {
+          '&:nth-of-type(even)': {
             backgroundColor: colors.gray97,
           }
         }

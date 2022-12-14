@@ -39,9 +39,11 @@ const Events = props => {
       <TableContainer className={classes.tableContainer} >
         <Table className={classes.table}>
           <TableHead>
-            <TableCell><Typography variant='subtitle2'>Name</Typography></TableCell>
-            <TableCell align="right"><Typography variant='subtitle2'>Created</Typography></TableCell>
-            <TableCell align="right"><Typography variant='subtitle2'>Start Date</Typography></TableCell>
+            <TableRow>
+              <TableCell><Typography variant='subtitle2'>Name</Typography></TableCell>
+              <TableCell align="right"><Typography variant='subtitle2'>Created</Typography></TableCell>
+              <TableCell align="right"><Typography variant='subtitle2'>Start Date</Typography></TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {events.map((event) => (

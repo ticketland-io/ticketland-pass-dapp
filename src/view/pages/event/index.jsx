@@ -55,7 +55,7 @@ const Event = () => {
   const [roles, setRoles] = useState([])
   const [guilds, setGuilds] = useState([])
   const [event, setEvent] = useState({})
-  const [guild, setGuild] = useState({})
+  const [guild, setGuild] = useState('')
   const [isGuildSelected, setIsGuildSelected] = useState(false)
   const [allRoles, setAllRoles] = useState([])
   const [guildAcls, setGuildAcls] = useState([])
@@ -91,7 +91,7 @@ const Event = () => {
           !isEmpty(currentGuild) && setIsGuildSelected(true)
         }
         catch (error) {
-          setGuild({})
+          setGuild('')
         }
       }
     }
@@ -233,7 +233,7 @@ const Event = () => {
                 <MenuItem
                   key={g.guild_id}
                   value={g.guild_id}
-                  disabled={g.event_id}
+                  disabled={Boolean(g.event_id)}
                 >
                   {g.name}
                 </MenuItem>
@@ -245,12 +245,14 @@ const Event = () => {
       <TableContainer className={classes.tableContainer} >
         <Table className={classes.table}>
           <TableHead>
-            <TableCell>
-              <Typography variant='subtitle2'>Ticket Type</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography variant='subtitle2'>Role</Typography>
-            </TableCell>
+            <TableRow>
+              <TableCell>
+                <Typography variant='subtitle2'>Ticket Type</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant='subtitle2'>Role</Typography>
+              </TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {event.sales?.map((sale) => (

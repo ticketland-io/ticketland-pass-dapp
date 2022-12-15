@@ -11,8 +11,10 @@ import styles from './styles'
 import Login from '../pages/login'
 import Register from '../pages/register'
 import Verify from '../pages/verify'
+import Events from '../pages/events'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Event from '../pages/event'
 
 const Router = props => {
   const [_, dispatch] = useContext(Context)
@@ -33,6 +35,8 @@ const Router = props => {
             <Route exact strict path='/login' element={<Login />} />
             <Route exact strict path='/register' element={<Register />} />
             <Route exact strict path='/verify' element={<Verify />} />
+            <Route exact strict path='/events' element={<Events />} />
+            <Route exact strict path='/events/:eventId' element={<Event />} />
           </Routes>
         </div>
         <Footer />

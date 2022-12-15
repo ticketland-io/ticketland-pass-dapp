@@ -1921,21 +1921,22 @@
   resolved "https://npm.pkg.github.com/download/@ticketland-io/eutopic-common/0.1.22/d877dec531019d15dc8422fcdaa17dbead0a437d#d877dec531019d15dc8422fcdaa17dbead0a437d"
   integrity sha512-TH07ZXxcJYUYig29fRc2bfxELbXlxNWtjZUlWA1sk4KyqA/teekVCQZgHLomFbGpRNkVJUIbI7yujtt7HGITGQ==
 
-"@ticketland-io/eutopic-core@0.1.22":
-  version "0.1.22"
-  resolved "https://npm.pkg.github.com/download/@ticketland-io/eutopic-core/0.1.22/456af24ca9d20ae697cdb5c5843f01e4d601ae95#456af24ca9d20ae697cdb5c5843f01e4d601ae95"
-  integrity sha512-T6ERzOQ/RryTODt6T6HvIsWT5tiOQsLf4gCDPzTgeV3NL7+C2isK5PFb4y7TeCyQaWDN39pt9Mm87d1jaUKLDQ==
+"@ticketland-io/eutopic-core@0.1.23":
+  version "0.1.23"
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/eutopic-core/0.1.23/16d423f3b54bec8521ad5a1e25a5fe9280189f40#16d423f3b54bec8521ad5a1e25a5fe9280189f40"
+  integrity sha512-CaxTY3W+xTQkomgBSDaeYcaBQVrf3OUoKo0yD9bmZqg+EV1Gd6EjgYk8aIlYZD+IrmQJ8Giwo6NYo56BT1L79g==
   dependencies:
     "@ppoliani/im-record" "^2.0.0"
     "@ticketland-io/eutopic-common" "^0.1.13"
 
-"@ticketland-io/eutopic-firebase-auth@0.1.22":
-  version "0.1.22"
-  resolved "https://npm.pkg.github.com/download/@ticketland-io/eutopic-firebase-auth/0.1.22/04a5677efc07bd506c36d681574131c97c96c798#04a5677efc07bd506c36d681574131c97c96c798"
-  integrity sha512-PA0SC1jXlq9oJ9ipr6N3GX0UQdbJG4H4Z0uln2zzY+q1HVMVkQ8r1Gfasj35Zvj8UVyPB51GBE957Dh/mwAuYw==
+"@ticketland-io/eutopic-firebase-auth@0.1.24":
+  version "0.1.24"
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/eutopic-firebase-auth/0.1.24/10e8ded8fe6ecdf4da4e5027a40e962e03476452#10e8ded8fe6ecdf4da4e5027a40e962e03476452"
+  integrity sha512-8FnEANowN8Xc0WWVVWEACwzw0fvLy5c1E75CE3Ucb2w2KosWdfvtxFGLQkHfJXBfcQHPzuvl9ohJ99K7PHHuaw==
   dependencies:
     "@ppoliani/im-record" "^2.0.0"
     firebase "^9.9.1"
+    jwt-decode "^3.1.2"
 
 "@ticketland-io/eutopic-indexdb-storage@^0.1.0", "@ticketland-io/eutopic-indexdb-storage@^0.1.13":
   version "0.1.22"
@@ -3153,6 +3154,11 @@ csstype@^3.0.2, csstype@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
+
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@2.6.9:
   version "2.6.9"
@@ -4474,6 +4480,11 @@ jszip@^3.10.0:
     pako "~1.0.2"
     readable-stream "~2.3.6"
     setimmediate "^1.0.5"
+
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
 
 keccak256@^1.0.6:
   version "1.0.6"

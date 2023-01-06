@@ -27,7 +27,9 @@ const colors = {
   yellow900: '#726A00',
   errorLight: '#F2AFA4',
   error: '#E24A30',
-  red: '#E24A30'
+  red: '#E24A30',
+  red100: '#b5432f',
+  green100: '#60b563'
 }
 
 export const getTheme = () => createTheme({
@@ -44,8 +46,8 @@ export const getTheme = () => createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 900,
-      md: 100,
+      sm: 600,
+      md: 900,
       lg: 1280,
       xl: 1920
     }
@@ -87,7 +89,7 @@ export const getTheme = () => createTheme({
     h3: {
       color: colors.gray800,
       fontSize: '32px',
-      fontWeight: '600',
+      fontWeight: '500',
       lineHeight: '36px',
     },
     h3: {
@@ -102,8 +104,18 @@ export const getTheme = () => createTheme({
       fontWeight: '600',
       lineHeight: '36px',
     },
-    h5: {},
-    h6: {},
+    h5: {
+      color: colors.gray100,
+      fontSize: '14px',
+      fontWeight: '400',
+      lineHeight: '18px',
+    },
+    h6: {
+      color: colors.gray200,
+      fontSize: '18px',
+      fontWeight: '400',
+      lineHeight: '36px',
+    },
     headerMenuLink: {
       fontSize: '14px',
       fontWeight: '500',
@@ -120,7 +132,6 @@ export const getTheme = () => createTheme({
       fontFamily: 'Poppins',
       fontSize: '32px',
       fontWeight: '600',
-      lineHeight: '36px',
     },
     body1: {
       color: colors.gray500,
@@ -139,9 +150,9 @@ export const getTheme = () => createTheme({
       lineHeight: '36px',
     },
     subtitle2: {
-      fontSize: '16px',
-      fontWeight: '500',
-      lineHeight: '24px',
+      fontSize: '20px',
+      fontWeight: '400',
+      lineHeight: '36px',
     },
     cardTitle: {
       color: colors.gray800,
@@ -164,9 +175,9 @@ export const getTheme = () => createTheme({
     },
     subscribeTitle: {
       color: colors.white,
-      fontSize: '20px',
-      fontWeight: '400',
-      lineHeight: '32px',
+      fontSize: '32px',
+      fontWeight: '500',
+      lineHeight: '36px',
     },
     subscribeBody: {
       color: colors.white,
@@ -215,7 +226,18 @@ export const getTheme = () => createTheme({
       fontWeight: '400',
       lineHeight: '16px',
     },
-
+    ticketName: {
+      color: colors.gray800,
+      fontSize: '16px',
+      fontWeight: '500',
+      lineHeight: '22px',
+    },
+    modalTitle: {
+      color: colors.gray800,
+      fontSize: '24px',
+      fontWeight: '500',
+      lineHeight: '36px',
+    },
     fontFamily: 'Poppins'
   },
   components: {
@@ -244,6 +266,9 @@ export const getTheme = () => createTheme({
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           width: '100%',
+          '@media (max-width:900px)': {
+            height: '100%'
+          }
         }
       }
     },
@@ -276,8 +301,8 @@ export const getTheme = () => createTheme({
           color: 'black'
         },
         sizeSmall: {
-          height: 28,
-          fontSize: 10
+          height: 40,
+          fontSize: 14
         },
         sizeMedium: {
           height: 48
@@ -321,6 +346,19 @@ export const getTheme = () => createTheme({
           backgroundColor: colors.gray800,
           '&:hover': {
             backgroundColor: colors.gray600,
+          },
+          '&:active': {
+            backgroundColor: colors.darkGray,
+          },
+          '&:disabled': {
+            backgroundColor: colors.gray300,
+          }
+        },
+        secondaryRed: {
+          color: colors.white,
+          backgroundColor: colors.red,
+          '&:hover': {
+            backgroundColor: colors.red100,
           },
           '&:active': {
             backgroundColor: colors.darkGray,
@@ -395,31 +433,18 @@ export const getTheme = () => createTheme({
         },
         endIcon: {
           fontSize: 12
+        }
+      }
+    },
+    MuiSlider: {
+      styleOverrides: {
+        rail: {
+          color: colors.gray200,
         },
-      }
-    },
-    MuiTableRow: {
-      styleOverrides: {
-        border: 0,
-        root: {
-          '&:nth-of-type(even)': {
-            backgroundColor: colors.gray97,
-          }
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderColor: colors.gray97
-        }
-      }
-    }
-  },
-  MuiChip: {
-    styleOverrides: {
-      root: {
-        backgroundColor: colors.error
+        markLabel: {
+          fontSize: '14px',
+          color: colors.gray300
+        },
       }
     }
   }

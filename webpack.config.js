@@ -45,22 +45,19 @@ module.exports = () => {
       })
     ],
 
-    externals: {
-      fs: 'commonjs2 fs'
-    },
-
     resolve: {
       extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
       fallback: {
         assert: require.resolve('assert/'),
         stream: require.resolve('stream-browserify'),
-        // os: require.resolve('os-browserify/browser'),
         crypto: require.resolve('crypto-browserify'),
         http: require.resolve('stream-http'),
         https: require.resolve('https-browserify'),
         util: require.resolve('util/'),
         zlib: require.resolve('browserify-zlib'),
-        path: require.resolve('path-browserify')
+        path: require.resolve('path-browserify'),
+        os: require.resolve("os-browserify"),
+        url: require.resolve("url/"),
       }
     },
   

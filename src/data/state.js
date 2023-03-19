@@ -27,7 +27,7 @@ export const initState = {
   web3: null,
   connection: null,
   walletType: 'custody', // custody or injected
-  eutopicCore,
+  walletCore,
   firebase,
   loading: false,
   user: null,

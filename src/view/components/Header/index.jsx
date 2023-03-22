@@ -1,95 +1,198 @@
-import React, {useState, useContext, useEffect} from 'react'
-import {Link} from 'react-router-dom'
-import {Grid, Typography, Box, Button} from '@mui/material'
-import Logo from '../../../assets/logo.png'
-import styles from './styles'
-import IconButton from '@mui/material/IconButton'
-import SearchIcon from '@mui/icons-material/Search';
+import React, {useState, useContext, useCallback} from 'react'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {
+  Grid,
+  Typography,
+  Button,
+  IconButton,
+} from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 import {Context} from '../../core/Store'
-import notification from '../../../assets/notification.svg'
+import Logo from '../../../assets/logo.svg'
 import profileIcon from '../../../assets/profileIcon.svg'
+import MenuIcon from '../../../assets/menuIcon.svg'
+import Image from '../Image'
+import styles from './styles'
+
+const useLightHeader = () => {
+  const {pathname} = useLocation()
+
+  return pathname.endsWith('/market')
+}
+
+const MenuLink = props => {
+  const {to, title} = props
+  const classes = styles()
+  const location = useLocation()
+  const isLightHeader = useLightHeader()
+
+  const isCurrentLink = location.pathname.endsWith(to)
+
+  return (
+    <Grid item>
+      <Link to={to}>
+        <Typography
+          color={isLightHeader && 'white'}
+          variant='headerMenuLink'
+          className={`${classes.menuLink} ${isCurrentLink ? classes.menuLinkSelected : ''}`}
+        >
+          {title}
+        </Typography>
+      </Link>
+    </Grid>
+  )
+}
 
 const Header = () => {
   const classes = styles()
-  const [state, dispatch] = useContext(Context)
-  const [loggedInUser, setLoggedInUser] = useState({})
+  const [state] = useContext(Context)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const location = useLocation()
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'))
+  const navigate = useNavigate()
+  const open = Boolean(anchorEl)
 
-  useEffect(() => {
-    state.firebase.onUserChanged(currentUser => {
-      setLoggedInUser(currentUser)
-    })
+  const signOut = useCallback(async () => {
+    try {
+      await state.firebase.signOutUser()
+
+      navigate(`/login?redirect-to=${location.pathname}`)
+    } catch (error) {
+      // ignore
+    }
   }, [])
 
-  return (
-    <Grid container className={classes.mainContainer} justifyContent='center'>
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const renderLogin = () => (state.user
+    ? (
+      <div className={classes.iconContainer}>
+        <Image
+          imageSrc={state.user?.photoURL}
+          fallbackSrc={profileIcon}
+          className={classes.userIcon}
+        />
+      </div>
+    ) : (
+      <Grid item>
+        <Link to={`/login?redirect-to=${location.pathname.slice(1)}`}>
+          <Button variant='contained' size='small' className={classes.menuButton}>
+            <Typography>
+              SIGN IN
+            </Typography>
+          </Button>
+        </Link>
+      </Grid>
+    ))
+
+  const renderMenu = () => !isMobile
+    ? (
       <Grid
         container
         item
-        xs={4}
-        justifyContent='flex-start'
+        columnSpacing={8}
+        ml={4}
+        sx={{justifyContent: {xs: 'flex-end', md: 'flex-start'}}}
         alignItems='center'
-        className={classes.innerContainer}
       >
-        <img src={Logo} />
-        <Typography variant='header' className={classes.headerText}>
-          Ticketland
-        </Typography>
-        <IconButton className={classes.searchButton}>
-          {/* TODO add search functionality */}
-          <SearchIcon />
+        <Grid item>
+          <MenuLink to='/events' title='Events' />
+        </Grid>
+      </Grid>
+    )
+    : null
+
+  const renderMobileMenu = () => isMobile
+    ? (
+      <Grid>
+        <IconButton onClick={handleClick}>
+          <img
+            alt='edit'
+            className={classes.mobileMenuIcon}
+            src={MenuIcon}
+          />
         </IconButton>
+        <Menu
+          id='basic-menu'
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          className={classes.menu}
+          PaperProps={{
+            className: classes.menu,
+          }}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <Link to='/events'>
+            <MenuItem onClick={handleClose} className={classes.menuItem}>
+              <Grid item xs={12} className={classes.menuItemText}>
+                <Typography>
+                  Events
+                </Typography>
+              </Grid>
+            </MenuItem>
+          </Link>
+          {state.user && (
+            <Button sx={{p: 0}} onClick={signOut}>
+              <MenuItem onClick={handleClose} className={classes.menuItem}>
+                <Grid item xs={12} className={classes.menuItemText}>
+                  <Typography color='common.red'>
+                    Logout
+                  </Typography>
+                </Grid>
+              </MenuItem>
+            </Button>
+          )}
+        </Menu>
       </Grid>
+    )
+    : null
+
+  return (
+    <Grid
+      container
+      flexWrap='nowrap'
+      className={classes.mainContainer}
+      justifyContent='center'
+    >
+      <Grid
+        component={Link}
+        to='/'
+        item
+        xs
+        container
+        flexWrap='nowrap'
+        alignItems='center'
+        mr={isMobile ? 10 : 0}
+      >
+        <img src={Logo} className={classes.headerIcon} />
+        <Typography variant='header' fontSize={isMobile ? '16px' : '20px'} noWrap>
+          Ticketland Pass
+        </Typography>
+      </Grid>
+      {renderMenu()}
       <Grid
         container
         item
-        xs={4}
-        spacing={6}
-        className={classes.innerContainer}
-        justifyContent='center'
+        flexWrap='nowrap'
+        justifyContent='flex-end'
         alignItems='center'
+
       >
-        <Grid item>
-          <Link to="/about" className={classes.menuButton}>
-            <Typography>
-              ABOUT
-            </Typography>
-          </Link>
-        </Grid>
-        <Grid item>
-          <Link to="/events" className={classes.menuButton}>
-            <Typography>
-              EVENTS
-            </Typography>
-          </Link>
-        </Grid>
+        {renderLogin()}
+        {renderMobileMenu()}
       </Grid>
-      {/* TODO check later if removed or add functionality*/}
-      <Grid container item xs={4} justifyContent='flex-end' alignItems='center' className={classes.innerContainer}>
-        {loggedInUser ? (
-          <Grid item container flexDirection='row' justifyContent='flex-end' alignItems='center'>
-            <IconButton>
-              <img src={notification} className={classes.bellIcon} />
-            </IconButton>
-            <Link to='/profile'>
-              {/* TODO add icon fetched from our database */}
-              <div className={classes.iconContainer}>
-                <img src={profileIcon} className={classes.userIcon} />
-              </div>
-            </Link>
-          </Grid>
-        ) : (
-          <Grid item>
-            <Link to="/login" className={classes.menuButton}>
-              <Button variant='contained'>
-                <Typography>
-                  SIGN IN
-                </Typography>
-              </Button>
-            </Link>
-          </Grid>
-        )}
-      </Grid >
-    </Grid >
+    </Grid>
   )
 }
 

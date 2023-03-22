@@ -1,10 +1,9 @@
 import makeStyles from '@mui/styles/makeStyles'
-import backgroundImage from '../../../assets/bg.png'
 
 export default makeStyles(theme => ({
   root: {
     position: 'relative',
-    width: '100%'
+    width: '100%',
   },
   backgroundColor: {
     backgroundColor: theme.palette.common.yellow100,
@@ -19,87 +18,35 @@ export default makeStyles(theme => ({
     margin: 'auto',
     zIndex: '1',
     position: 'relative',
+    [theme.breakpoints.down('lg')]: {
+      padding: '16px',
+    },
   },
-  welcomeText: {
-    fontSize: '4.75rem',
-    lineHeight: '4.75rem',
-    marginTop: '5.5rem'
-  },
-  subText: {
-    fontSize: '1rem',
-    width: '424px'
-  },
-  carousel: {
-    borderRadius: '15px'
+  loginForm: {
+    width: 'fit-content',
   },
   newEventsTextItem: {
     marginBottom: '1rem',
     marginTop: '4.5rem',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '2.5rem',
+    },
   },
   newEventsText: {
-    fontSize: '2rem'
-  },
-  carouselEventContainer: {
-    margin: '8px 8px 8px 8px'
-  },
-  carouselEventDescription: {
-    backgroundColor: theme.palette.common.gray100,
-    margin: '16px 16px 16px 0px',
-    borderRadius: '12px',
-    width: '296px',
-    height: '168px',
-    overflowX: 'auto',
-    padding: '0.75rem'
-  },
-  carouselEventInfo: {
-    borderRadius: '12px',
-    border: '1px solid',
-    padding: '0.25rem',
-    margin: '0px 16px 16px 0px',
-    borderColor: theme.palette.common.gray100
-  },
-  iconColor: {
-    color: theme.palette.common.gray500,
-    fontSize: '15px'
-  },
-  infoText: {
-    marginLeft: '0.3rem'
-  },
-  carouselArrows: {
-    color: theme.palette.common.yellow500,
-    fontSize: '15px',
-  },
-  imageItem: {
-    padding: '8px'
-  },
-  imageEvent: {
-    borderRadius: '16px 3px 3px 16px'
-  },
-  descriptionHeader: {
-    fontSize: '1rem',
-    fontWeight: '600',
-    marginBottom: '8px'
-  },
-  descriptionText: {
-    fontSize: '0.875rem',
-    lineHeight: '1.25rem'
-  },
-  liveIconItem: {
-    position: 'absolute',
-    top: '8%',
-    left: '4%'
+    fontSize: '2rem',
   },
   socialMediaItem: {
-    marginBottom: '1rem'
+    marginBottom: '1rem',
   },
   socialMediaText: {
     fontSize: '1rem',
-    color: '#7E8186'
+    color: theme.palette.common.gray400,
+  },
+  providerErrorText: {
+    fontSize: '1rem',
+    color: theme.palette.common.error,
   },
   loginFormInnerFirstContainer: {
-    padding: '1.5rem 1.5rem 2rem 1.5rem'
+    padding: '1.5rem 1.5rem 2rem 1.5rem',
   },
-  imageCarouselCard: {
-    display: 'flex'
-  }
 }))

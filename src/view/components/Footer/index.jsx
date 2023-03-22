@@ -1,24 +1,26 @@
 import React from 'react'
-import {Box, Grid, Typography} from '@mui/material'
-import styles from './styles'
-import logoLight from '../../../assets/logoLight.png'
-import twitter from '../../../assets/twitter.png'
-import github from '../../../assets/github.png'
+import {
+  Box, Grid, Typography, Link as MuiLink,
+} from '@mui/material'
 import {Link} from 'react-router-dom'
+import styles from './styles'
+import logoLight from '../../../assets/logoLight.svg'
+import twitter from '../../../assets/twitter.svg'
+import github from '../../../assets/github.svg'
 
 const Footer = () => {
   const classes = styles()
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear()
 
   return (
-    <Box className={classes.boxContainer}>
+    <Box>
       <div className={classes.container}>
-        <Grid spacing={4} container className={classes.content}>
+        <Grid rowSpacing={4} container className={classes.content}>
           <Grid item container justifyContent='space-between'>
             <Grid item>
               <Link to='/'>
                 <div className={classes.logo}>
-                  <img src={logoLight} />
+                  <img src={logoLight} className={classes.logoIcon} />
                   <Typography variant='subscribeBody' paddingLeft='10px'>Ticketland</Typography>
                 </div>
               </Link>
@@ -27,26 +29,38 @@ const Footer = () => {
               <Typography variant='footer' className={classes.question}>
                 Questions?
               </Typography>
-              <Typography variant='footer' className={classes.email}>
+              <Typography
+                variant='footer'
+                className={classes.email}
+                component={MuiLink}
+                href='mailto:info@ticketland.io'
+              >
                 info@ticketland.io
               </Typography>
             </Grid>
           </Grid>
           <Grid item container justifyContent='space-between'>
             <Grid item>
+              <Link to='/new' className={classes.menuButton}>
+                <Typography variant='footer' className={classes.footerMenu}>Events</Typography>
+              </Link>
               <Link to='/about' className={classes.menuButton}>
                 <Typography variant='footer' className={classes.footerMenu}>About</Typography>
               </Link>
             </Grid>
             <Grid item>
-              <img src={twitter} className={classes.social} />
-              <img src={github} className={classes.social} />
+              <MuiLink href='https://twitter.com/ticketlandio' target='_blank' rel='noopener noreferrer'>
+                <img src={twitter} className={classes.social} />
+              </MuiLink>
+              <MuiLink href='https://github.com/ticketland-io' target='_blank' rel='noopener noreferrer'>
+                <img src={github} className={classes.social} />
+              </MuiLink>
             </Grid>
           </Grid>
         </Grid>
       </div>
       <Grid container className={classes.copyright} justifyContent='center'>
-        <Typography variant='footer' className={classes.footerMenu}>{year}, all rights reserved</Typography>
+        <Typography variant='footer' className={classes.footerMenu}>&copy; {year}, all rights reserved</Typography>
       </Grid>
     </Box>
   )

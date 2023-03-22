@@ -1,8 +1,7 @@
 const webpack = require('webpack')
-const fs = require('fs')
 const path = require('path')
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const package = require('./package.json')
 const {parseStringifiedEnv} = require('./build_config/env')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -16,33 +15,35 @@ module.exports = () => {
     mode,
     context: sourcePath,
 
-    entry: { 
+    entry: {
       main: './src/view/index.jsx',
     },
-    
+
     output: {
       path: distPath,
-      filename: '[name].js?v=[contenthash]'
+      filename: '[name].js?v=[contenthash]',
     },
-  
+
     optimization: {
       minimize: isProd,
-      splitChunks: { 
+      splitChunks: {
         chunks: 'all',
-        name: 'shared'
-      }
+        name: 'shared',
+      },
     },
 
     plugins: [
       new webpack.DefinePlugin(parseStringifiedEnv(envPath)),
       new webpack.ProvidePlugin({
         process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
+        Buffer: ['buffer', 'Buffer'],
       }),
       new HtmlWebpackPlugin({
-        template: `./src/view/index.html`,
-        publicPath: '/'
-      })
+        template: './src/view/index.html',
+        favicon: './src/assets/favicon/favicon.ico',
+
+        publicPath: '/',
+      }),
     ],
 
     resolve: {
@@ -56,17 +57,17 @@ module.exports = () => {
         util: require.resolve('util/'),
         zlib: require.resolve('browserify-zlib'),
         path: require.resolve('path-browserify'),
-        os: require.resolve("os-browserify"),
-        url: require.resolve("url/"),
-      }
+        os: require.resolve('os-browserify'),
+        url: require.resolve('url/'),
+      },
     },
-  
+
     module: {
       rules: [
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: ['babel-loader']
+          use: ['babel-loader'],
         },
         {
           test: /\.css$/,
@@ -80,19 +81,19 @@ module.exports = () => {
           test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
           type: 'asset/inline',
         },
-      ]
+      ],
     },
-  
+
     devServer: {
       contentBase: path.resolve(__dirname, './dist'),
     },
   }
 
-  if(process.env.ANALYZE) {
+  if (process.env.ANALYZE) {
     config.plugins.push(new BundleAnalyzerPlugin())
   }
 
-  if(!isProd) {
+  if (!isProd) {
     config.devtool = 'inline-source-map'
     config.devServer = {
       static: {
@@ -103,7 +104,7 @@ module.exports = () => {
       historyApiFallback: true,
       port: process.env.PORT,
       compress: true,
-      hot: false
+      hot: false,
     }
   }
 

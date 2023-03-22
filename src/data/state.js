@@ -29,7 +29,7 @@ export const initState = {
   walletType: 'custody', // custody or injected
   walletCore,
   firebase,
-  loading: false,
+  loading: true,
   user: null,
 }
 

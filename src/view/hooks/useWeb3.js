@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {useEffect, useState, useContext} from 'react'
 import Web3 from '@apocentre/solana-web3'
 import {Context} from '../core/Store'
@@ -8,7 +9,7 @@ export default () => {
 
   useEffect(() => {
     const initWeb3 = async () => {
-      if(state.connection && state.user && !state.web3) {
+      if (state.connection && state.user && !state.web3) {
         const _web3 = Web3()
         let custodyWallet
         
@@ -20,8 +21,8 @@ export default () => {
         setWeb3(_web3)
       }
     }
-    
-    initWeb3().catch(console.error)
+
+    initWeb3().catch(error => console.error('Failed to initialize web3: ', error))
   }, [state.connection, state.user])
 
   return web3

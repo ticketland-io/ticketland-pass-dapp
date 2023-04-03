@@ -5,6 +5,7 @@ import {
   Typography,
   Button,
   IconButton,
+  Link as MuiLink,
 } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@mui/material/Menu'
@@ -58,7 +59,7 @@ const Header = () => {
     try {
       await state.firebase.signOutUser()
 
-      navigate(`/login?redirect-to=${location.pathname}`)
+      navigate(`/login?redirect_to=${location.pathname}`)
     } catch (error) {
       // ignore
     }
@@ -83,9 +84,9 @@ const Header = () => {
       </div>
     ) : (
       <Grid item>
-        <Link to={`/login?redirect-to=${location.pathname.slice(1)}`}>
+        <Link to={`/login?redirect_to=${location.pathname.slice(1)}`}>
           <Button variant='contained' size='small' className={classes.menuButton}>
-            <Typography>
+            <Typography noWrap>
               SIGN IN
             </Typography>
           </Button>
@@ -133,6 +134,15 @@ const Header = () => {
             'aria-labelledby': 'basic-button',
           }}
         >
+          <MuiLink target='_blank' href={process.env.DISCORD_LINK}>
+            <MenuItem onClick={handleClose} className={classes.menuItem}>
+              <Grid item xs={12} className={classes.menuItemText}>
+                <Typography>
+                  Install App
+                </Typography>
+              </Grid>
+            </MenuItem>
+          </MuiLink>
           <Link to='/events'>
             <MenuItem onClick={handleClose} className={classes.menuItem}>
               <Grid item xs={12} className={classes.menuItemText}>
@@ -173,10 +183,14 @@ const Header = () => {
         container
         flexWrap='nowrap'
         alignItems='center'
-        mr={isMobile ? 10 : 0}
+        mr={{xs: 4, sm: 10, md: 0}}
       >
         <img src={Logo} className={classes.headerIcon} />
-        <Typography variant='header' fontSize={isMobile ? '16px' : '20px'} noWrap>
+        <Typography
+          variant='header'
+          fontSize={{xs: '13px', sm: '16px', md: '20px'}}
+          noWrap
+        >
           Ticketland Pass
         </Typography>
       </Grid>
@@ -189,6 +203,13 @@ const Header = () => {
         alignItems='center'
 
       >
+        {!isMobile && (
+          <MuiLink target='_blank' href={process.env.DISCORD_LINK}>
+            <Button variant='outlined' size='small' className={classes.newEventButton}>
+              Install App
+            </Button>
+          </MuiLink>
+        )}
         {renderLogin()}
         {renderMobileMenu()}
       </Grid>

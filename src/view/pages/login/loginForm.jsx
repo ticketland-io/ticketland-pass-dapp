@@ -44,7 +44,7 @@ const LoginForm = () => {
       const qs = Object.fromEntries(urlSearchParams.entries())
 
       // eslint-disable-next-line no-unused-expressions
-      qs['redirect-to'] ? navigate(`/${qs['redirect-to']}`) : navigate('/')
+      qs.redirect_to ? navigate(`/${qs.redirect_to}`) : navigate('/')
     } catch (error) {
       if (error.code === 'auth/account-exists-with-different-credential') {
         setProviderError(true)

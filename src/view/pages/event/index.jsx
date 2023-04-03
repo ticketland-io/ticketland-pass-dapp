@@ -1,4 +1,10 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
+/* eslint-disable camelcase */
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useMemo,
+} from 'react'
 import {
   TableBody,
   TableCell,
@@ -14,7 +20,7 @@ import {
   OutlinedInput,
   Chip,
   Box,
-  InputLabel
+  InputLabel,
 } from '@mui/material'
 import {useParams} from 'react-router-dom'
 import {Context} from '../../core/Store'
@@ -27,12 +33,12 @@ import {
   fetchUserGuilds,
   createGuildAcl,
   fetchGuildAcls,
-  updateGuildAcl
+  updateGuildAcl,
 } from '../../../services/guild'
 import styles from './styles'
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
@@ -40,41 +46,39 @@ const MenuProps = {
       width: 250,
     },
   },
-};
+}
 
 const areEqual = (allRoles, guildAclRoles = []) => allRoles.length === guildAclRoles.length
   && allRoles.every(element => guildAclRoles.some(role => element.id === role.id))
 
-const isEmpty = obj => Object.keys(obj).length < 1;
+const isEmpty = obj => Object.keys(obj).length < 1
 
 const Event = () => {
   const {eventId} = useParams()
-  const [state, dispatch] = useContext(Context)
+  const [state] = useContext(Context)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [isGuildDisabled, setIsGuildDisabled] = useState(false)
   const [roles, setRoles] = useState([])
-  console.log(`🚀 ~ Event ~ roles`, roles);
   const [guilds, setGuilds] = useState([])
   const [event, setEvent] = useState({})
   const [guild, setGuild] = useState('')
   const [isGuildSelected, setIsGuildSelected] = useState(false)
   const [allRoles, setAllRoles] = useState([])
-  console.log(`🚀 ~ Event ~ allRoles`, allRoles);
   const [guildAcls, setGuildAcls] = useState([])
   const classes = styles()
 
   useEffect(() => {
     const run = async () => {
-      if(eventId && state.user) {
-        const event = await fetchEvent(state.firebase, eventId)
+      if (eventId && state.user) {
+        const {result: eventResult} = await fetchEvent(state.firebase, eventId)
         const {result: userGuilds} = await fetchUserGuilds(state.firebase)
 
-        setEvent(event.result[0])
+        setEvent(eventResult[0])
         setGuilds(userGuilds)
 
         const currentGuild = userGuilds.find(g => g.event_id === eventId)
 
-        if(!isEmpty(currentGuild)) {
+        if (!isEmpty(currentGuild)) {
           setIsGuildSelected(true)
 
           setGuild(currentGuild.guild_id)
@@ -86,12 +90,12 @@ const Event = () => {
 
   useEffect(() => {
     const run = async () => {
-      if(guild && allRoles.length > 0 && state.user && !isEmpty(event)) {
+      if (guild && allRoles.length > 0 && state.user && !isEmpty(event)) {
         try {
           const newGuildAcls = await fetchGuildAcls(state.firebase, guild)
 
-          if(newGuildAcls.length > 0) {
-            let aclRoles = event.sales
+          if (newGuildAcls.length > 0) {
+            const aclRoles = event.sales
               .map(sale => {
                 const acl = newGuildAcls.find(guild_acl => guild_acl.ticket_type_index === sale.ticket_type_index)
 
@@ -104,8 +108,7 @@ const Event = () => {
           }
 
           setGuildAcls(newGuildAcls)
-        }
-        catch(error) {
+        } catch (error) {
           setGuild('')
         }
       }
@@ -116,7 +119,7 @@ const Event = () => {
 
   useEffect(() => {
     const run = async () => {
-      if(!isEmpty(guild) && state.user) {
+      if (!isEmpty(guild) && state.user) {
         setIsGuildDisabled(true)
         setAllRoles(await fetchGuildRoles(state.firebase, guild))
       }
@@ -125,13 +128,12 @@ const Event = () => {
     run()
   }, [state.firebase, guild, state.user])
 
-
   const handleSelectChange = async evt => {
     setGuild(evt.target.value)
   }
 
   const handleMultipleSelectChange = (evt, ticket_type_index) => {
-    const value = evt.target.value
+    const {value} = evt.target
 
     roles[ticket_type_index] = value
     setRoles([...roles])
@@ -144,29 +146,28 @@ const Event = () => {
         const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
         const roleIds = roles[ticket_type_index].map(role => role.id)
 
-        if(guildAcls[guildAclIndex]?.roles && !areEqual(roleIds, guildAcls[guildAclIndex]?.roles)) {
+        if (guildAcls[guildAclIndex]?.roles && !areEqual(roleIds, guildAcls[guildAclIndex]?.roles)) {
           const guildAclResult = await updateGuildAcl(state.firebase, guildAcls[guildAclIndex].id, roleIds)
 
           return guildAclResult
-
-        } else if(guildAclIndex === -1 && roles[ticket_type_index]?.length > 0) {
+        } if (guildAclIndex === -1 && roles[ticket_type_index]?.length > 0) {
           const guildAclResult = await createGuildAcl(
             state.firebase,
             {
               guild_id: guild,
               roles: roleIds,
-              ticket_type_index: sale.ticket_type_index
-            }
+              ticket_type_index: sale.ticket_type_index,
+            },
           )
 
           return guildAclResult
         }
 
         return guildAcls[guildAclIndex]
-      })
+      }),
     )
     setGuildAcls(updatedGuildAcls)
-    if(!isGuildSelected) {
+    if (!isGuildSelected) {
       updateEventGuild(state.firebase, guild, eventId)
       setIsGuildSelected(true)
     }
@@ -175,7 +176,7 @@ const Event = () => {
   }
 
   const isSubmitDisabled = useMemo(() => {
-    if(!isEmpty(event) && roles.length > 0) {
+    if (!isEmpty(event) && roles.length > 0) {
       return event?.sales.every((sale, ticket_type_index) => {
         const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
         const roleIds = roles[ticket_type_index].map(role => role.id)
@@ -189,19 +190,19 @@ const Event = () => {
     }
 
     return true
-  }, [event, guildAcls, roles,])
+  }, [event, guildAcls, roles])
 
-  const renderSelectRoles = (ticket_type_index) => !isEmpty(guild) && (
+  const renderSelectRoles = ticket_type_index => !isEmpty(guild) && (
     <FormControl sx={{m: 1, width: 300}}>
       <Select
         multiple
         value={roles[ticket_type_index] || []}
         onChange={value => handleMultipleSelectChange(value, ticket_type_index)}
-        input={<OutlinedInput label="Roles" />}
+        input={<OutlinedInput label='Roles' />}
         renderValue={selected => (
           <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
             {selected.map(value => {
-              console.log(`🚀 ~ Event ~ value`, value);
+              console.log('🚀 ~ Event ~ value', value)
               return (
                 <Chip color='secondary' key={value.id} label={value.name} />
               )
@@ -210,7 +211,7 @@ const Event = () => {
         )}
         MenuProps={MenuProps}
       >
-        {allRoles.map((role) => (
+        {allRoles.map(role => (
           <MenuItem
             key={role.id}
             value={role}
@@ -225,7 +226,7 @@ const Event = () => {
   return (
     <Grid container className={classes.container}>
       <Grid item xs={12} className={classes.header}>
-        <SectionTitle title={'My'} secondaryTitle={'event'} />
+        <SectionTitle title='My' secondaryTitle='event' />
       </Grid>
       <Grid item container justifyContent='space-between'>
         <Grid item className={classes.eventName}>
@@ -244,7 +245,7 @@ const Event = () => {
               onChange={handleSelectChange}
               disabled={isGuildDisabled}
             >
-              {guilds.map(g =>
+              {guilds.map(g => (
                 <MenuItem
                   key={g.guild_id}
                   value={g.guild_id}
@@ -252,37 +253,37 @@ const Event = () => {
                 >
                   {g.name}
                 </MenuItem>
-              )}
+              ))}
             </Select>
           </FormControl>
         </Grid>
       </Grid>
-      <TableContainer className={classes.tableContainer} >
+      <TableContainer className={classes.tableContainer}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <TableCell>
                 <Typography variant='subtitle2'>Ticket Type</Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align='right'>
                 <Typography variant='subtitle2'>Role</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {event.sales?.map((sale) => (
+            {event.sales?.map(sale => (
               <TableRow key={sale.ticket_type_index}>
                 <TableCell>
                   <Typography variant='body1'>{sale.ticket_type_name}</Typography>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align='right'>
                   {renderSelectRoles(sale.ticket_type_index)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer >
+      </TableContainer>
       <Grid item container>
         <AsyncButton
           variant='contained'

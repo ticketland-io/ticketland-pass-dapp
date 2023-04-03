@@ -8,6 +8,7 @@ import {
 import {Context} from './Store'
 import {setWalletType} from '../../data/actions'
 import styles from './styles'
+import Register from '../pages/register'
 import Login from '../pages/login'
 import Verify from '../pages/verify'
 import Events from '../pages/events'
@@ -36,6 +37,7 @@ const Router = () => {
               element={<Navigate to='/events' replace />}
             />
             <Route exact strict path='/login' element={<Login />} />
+            <Route exact strict path='/register' element={<Register />} />
             <Route exact strict path='/verify' element={<Verify />} />
             <Route exact strict path='/events' element={<Events />} />
             <Route exact strict path='/events/:eventId' element={<Event />} />

@@ -134,7 +134,7 @@ const Header = () => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MuiLink target='_blank' href={process.env.DISCORD_LINK}>
+          <MuiLink target='_blank' href={process.env.DISCORD_INSTALL_APP_LINK}>
             <MenuItem onClick={handleClose} className={classes.menuItem}>
               <Grid item xs={12} className={classes.menuItemText}>
                 <Typography>
@@ -204,7 +204,7 @@ const Header = () => {
 
       >
         {!isMobile && (
-          <MuiLink target='_blank' href={process.env.DISCORD_LINK}>
+          <MuiLink target='_blank' href={process.env.DISCORD_INSTALL_APP_LINK}>
             <Button variant='outlined' size='small' className={classes.newEventButton}>
               Install App
             </Button>

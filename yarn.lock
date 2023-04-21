@@ -2544,8 +2544,8 @@
 
 "@ticketland-io/wallet-core@^0.1.0":
   version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@ticketland-io/wallet-core/0.1.0/ab3383081c7031e4225fc95f9aa2e45e4ddf8a80#ab3383081c7031e4225fc95f9aa2e45e4ddf8a80"
-  integrity sha512-tLX5f4pkHCGMmVuZS+g+tyPfO5J/ps+qrKmtazhtTjsxy2GltT5wDOqEcO9meaNGRjElvBKyslpEvXhqyjiZAw==
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/wallet-core/0.1.0/f707fe1988995b143360b6696a8f8bf50bd2cab7#f707fe1988995b143360b6696a8f8bf50bd2cab7"
+  integrity sha512-DU6vWHvUz6wm8AuAyONFD/vVUUV1FQRqBmZrWihMkdcovr31jA3DnFcS4Z3s4Y79R9iuv5sARsrKAco2SmcFcQ==
   dependencies:
     "@ppoliani/im-record" "^2.0.0"
     "@ticketland-io/wallet-common" "^0.1.0"

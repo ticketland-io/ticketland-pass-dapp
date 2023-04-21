@@ -55,15 +55,16 @@ const Header = () => {
   const navigate = useNavigate()
   const open = Boolean(anchorEl)
 
-  const signOut = useCallback(async () => {
+  const signOut = async () => {
     try {
       await state.firebase.signOutUser()
+      await state.walletCore.logout()
 
       navigate(`/login?redirect_to=${location.pathname}`)
     } catch (error) {
       // ignore
     }
-  }, [])
+  }
 
   const handleClose = () => {
     setAnchorEl(null)

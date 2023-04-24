@@ -15,6 +15,7 @@ import Events from '../pages/events'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Event from '../pages/event'
+import Profile from '../pages/profile'
 
 const Router = () => {
   const [_, dispatch] = useContext(Context)
@@ -37,6 +38,7 @@ const Router = () => {
               element={<Navigate to='/events' replace />}
             />
             <Route exact strict path='/login' element={<Login />} />
+            <Route exact strict path='/profile' element={<Profile />} />
             <Route exact strict path='/register' element={<Register />} />
             <Route exact strict path='/verify' element={<Verify />} />
             <Route exact strict path='/events' element={<Events />} />

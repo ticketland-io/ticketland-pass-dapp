@@ -76,13 +76,15 @@ const Header = () => {
 
   const renderLogin = () => (state.user
     ? (
-      <div className={classes.iconContainer}>
-        <Image
-          imageSrc={state.user?.photoURL}
-          fallbackSrc={profileIcon}
-          className={classes.userIcon}
-        />
-      </div>
+      <Link to='/profile'>
+        <div className={classes.iconContainer}>
+          <Image
+            imageSrc={state.user?.photoURL}
+            fallbackSrc={profileIcon}
+            className={classes.userIcon}
+          />
+        </div>
+      </Link>
     ) : (
       <Grid item>
         <Link to={`/login?redirect_to=${location.pathname.slice(1)}`}>

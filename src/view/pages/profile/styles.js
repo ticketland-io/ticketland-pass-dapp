@@ -5,11 +5,15 @@ export default makeStyles(theme => ({
     padding: '45px 0',
   },
   profileMenu: {
+    marginTop: '60px',
     borderRadius: '24px',
     border: `2px solid ${theme.palette.common.gray200}`,
     padding: '16px',
     margin: 'auto',
     maxWidth: '1224px',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '28px',
+    },
   },
   userIconContainer: {
     position: 'relative',
@@ -43,6 +47,6 @@ export default makeStyles(theme => ({
     },
   },
   title: {
-    padding: '16px',
+    padding: '0px 16px',
   },
 }))

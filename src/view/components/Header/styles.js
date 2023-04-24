@@ -40,8 +40,8 @@ export default makeStyles(theme => ({
     height: '17.5px',
   },
   iconContainer: {
-    width: '32px',
-    height: '32px',
+    width: '40px',
+    height: '40px',
     border: `2px solid ${theme.palette.common.yellow500}`,
     backgroundColor: theme.palette.common.white,
     borderRadius: '12px',

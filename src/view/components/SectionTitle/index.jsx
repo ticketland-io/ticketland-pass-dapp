@@ -7,12 +7,13 @@ const SectionTitle = props => {
   const {
     title = '',
     secondaryTitle = 'events',
-    className = ''
+    className = '',
+    rootClassName = '',
   } = props
   const classes = styles()
 
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${rootClassName}`}>
       <div className={`${classes.background} ${className}`}>
         <Typography variant='title'>{capitalizeFirstLetter(title)} </Typography>
         <Typography variant='title' className={classes.eventsText}>{secondaryTitle}</Typography>

@@ -4,12 +4,6 @@ export default makeStyles(theme => ({
   root: {
     padding: '45px 0',
   },
-  userProfileContainer: {
-    marginTop: '60px',
-    [theme.breakpoints.down('md')]: {
-      marginTop: '28px',
-    },
-  },
   profileMenu: {
     borderRadius: '24px',
     border: `2px solid ${theme.palette.common.gray200}`,
@@ -42,5 +36,13 @@ export default makeStyles(theme => ({
       justifyContent: 'center',
       wordBreak: 'break-word',
     },
+  },
+  titleItem: {
+    [theme.breakpoints.down('md')]: {
+      margin: 'auto',
+    },
+  },
+  title: {
+    padding: '16px',
   },
 }))

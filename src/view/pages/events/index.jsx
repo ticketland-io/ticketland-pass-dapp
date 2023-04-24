@@ -14,17 +14,22 @@ import {format} from 'date-fns'
 import {fetchEventsByUser} from '../../../services/events'
 import {Context} from '../../core/Store'
 import SectionTitle from '../../components/SectionTitle'
+import {fetchUserGuilds} from '../../../services/guild'
 import styles from './styles'
 
 const Events = () => {
   const [state] = useContext(Context)
   const [events, setEvents] = useState([])
+  const [guilds, setGuilds] = useState([])
   const classes = styles()
 
   useEffect(async () => {
     const run = async () => {
       if (state.user) {
+        const {result: userGuilds} = await fetchUserGuilds(state.firebase)
         const {result} = await fetchEventsByUser(state.firebase)
+
+        setGuilds(userGuilds)
         setEvents(result)
       }
     }
@@ -58,6 +63,27 @@ const Events = () => {
                 </TableCell>
                 <TableCell align='right'>
                   <Typography variant='body1'>{format(new Date(event.start_date), 'dd.MM.yy')}</Typography>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Grid item xs={12} className={classes.header}>
+        <SectionTitle secondaryTitle='Discord servers' />
+      </Grid>
+      <TableContainer className={classes.tableContainer}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell><Typography variant='subtitle2'>Name</Typography></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {guilds.map(({name}) => (
+              <TableRow key={name}>
+                <TableCell>
+                  <Typography variant='body1'>{name}</Typography>
                 </TableCell>
               </TableRow>
             ))}

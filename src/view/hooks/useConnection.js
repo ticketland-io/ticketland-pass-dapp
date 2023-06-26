@@ -1,18 +1,18 @@
 import {useEffect, useState} from 'react'
-import * as anchor from '@project-serum/anchor'
+import {Connection, JsonRpcProvider} from '@mysten/sui.js'
 
-const {Connection} = anchor.web3
-
-export default (rpcServer) => {
+export default rpcServer => {
   const [connection, setConnection] = useState()
 
   useEffect(() => {
     const initConnection = async () => {
       setConnection(
-        new Connection(rpcServer, 'confirmed')
+        new JsonRpcProvider(
+          new Connection({fullnode: rpcServer})
+        )
       )
     }
-    
+
     initConnection().catch(console.error)
   }, [])
 

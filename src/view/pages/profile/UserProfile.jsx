@@ -13,8 +13,7 @@ import {useNavigate} from 'react-router-dom'
 import LogoutIcon from '@mui/icons-material/Logout'
 import {Context} from '../../core/Store'
 import profileIcon from '../../../assets/profileIcon.svg'
-import {currencies, DECIMALS} from '../../../services/constants'
-import {formatValue} from '../../../services/format'
+import {formatValue, fromBase} from '../../../services/format'
 import Shadow from '../../components/Shadow'
 import Button from '../../components/AsyncButton'
 import Image from '../../components/Image'
@@ -25,7 +24,7 @@ const UserProfile = () => {
   const [state] = useContext(Context)
   const [balancesLoading, setBalancesLoading] = useState(true)
   const [usdcBalance, setUsdcBalance] = useState(0)
-  const [solBalance, setSolBalance] = useState(0)
+  const [suiBalance, setSuiBalance] = useState(0)
   const navigate = useNavigate()
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'))
 
@@ -34,15 +33,17 @@ const UserProfile = () => {
       setBalancesLoading(true)
 
       try {
-        const usdcAta = await state.web3.getAssociatedTokenAddress(
-          currencies.USDC,
-          state.web3.wallet.publicKey,
-          true,
-        )
-        const {value: {amount}} = await state.web3.getTokenAccountBalance(usdcAta)
+        const allCoins = await state.wallet.signer.provider.getAllCoins({
+          owner: state.wallet?.publicKey.toSuiAddress(),
+        })
 
-        setUsdcBalance(amount)
-        setSolBalance(await state.web3.getBalance(state.web3.wallet.publicKey))
+        const result = allCoins.data.reduce((acc, cur) => ({
+          ...acc,
+          [cur.coinType.split('::')[2]]: cur.balance,
+        }), {})
+
+        setSuiBalance(result.SUI || 0)
+        setUsdcBalance(result.USDC || 0)
       } catch (error) {
         console.error('Error loading account balances', error)
       }
@@ -50,10 +51,10 @@ const UserProfile = () => {
       setBalancesLoading(false)
     }
 
-    if (state.web3 && state.web3.wallet && state.user) {
+    if (state.wallet && state.user) {
       run()
     }
-  }, [state.web3, state.user])
+  }, [state.wallet, state.user])
 
   const signOut = async () => {
     try {
@@ -90,7 +91,7 @@ const UserProfile = () => {
           <Typography>
             SOL account:&nbsp;
           </Typography>
-          <strong>{state.web3?.wallet?.publicKey.toBase58()}</strong>
+          <strong>{state.wallet?.publicKey.toSuiAddress()}</strong>
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{textAlign: {xs: 'center', md: 'start'}}}>
@@ -101,7 +102,7 @@ const UserProfile = () => {
           <strong>
             {balancesLoading
               ? <Skeleton width='150px' variant='text' />
-              : formatValue(state.web3?.fromBase(solBalance))}
+              : formatValue(fromBase(suiBalance))}
           </strong>
         </Typography>
       </Grid>
@@ -113,7 +114,7 @@ const UserProfile = () => {
           <strong>
             {balancesLoading
               ? <Skeleton width='150px' variant='text' />
-              : formatValue(state.web3?.fromBase(usdcBalance, DECIMALS))}
+              : formatValue(fromBase(usdcBalance, 6))}
           </strong>
         </Typography>
       </Grid>

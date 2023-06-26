@@ -1,19 +1,16 @@
 import {WalletCore, constants} from '@ticketland-io/wallet-core'
-import SolanaWallet from '@ticketland-io/solana-wallet'
+import SuiWallet from '@ticketland-io/sui-wallet'
 import Enclave from '@ticketland-io/web-enclave'
 import FirebaseAuth from '@ticketland-io/firebase-auth'
 
-const Wallet = () => SolanaWallet({enclave: Enclave()})
+const Wallet = () => SuiWallet({enclave: Enclave()})
 const walletCore = WalletCore({Wallet})
 const firebase = FirebaseAuth()
 
 const web3AuthConfig = {
   clientId: process.env.WEB3_AUTH_CLIENT_ID,
   verifier: process.env.WEB3_AUTH_VERIFIER,
-  chainId: process.env.CHAIN_ID,
-  chainNamespace: constants.CHAIN_NAMESPACES.SOLANA,
-  rpcTarget: process.env.CLUSTER_ENDPOINT,
-  web3AuthNetwork: process.env.WEB_AUTH_NETWORK,
+  chainNamespace: constants.CHAIN_NAMESPACES.OTHER,
   domain: process.env.DAPP_DOMAIN,
 }
 
@@ -24,7 +21,6 @@ walletCore.init(
 )
 
 export const initState = {
-  web3: null,
   connection: null,
   walletType: 'custody', // custody or injected
   walletCore,
@@ -41,8 +37,8 @@ export const reducer = (state, action) => {
       return {...state, walletType: action.value}
     case 'user':
       return {...state, user: action.value}
-    case 'web3':
-      return {...state, web3: action.value}
+    case 'wallet':
+      return {...state, wallet: action.value}
     case 'connection':
       return {...state, connection: action.value}
     default:

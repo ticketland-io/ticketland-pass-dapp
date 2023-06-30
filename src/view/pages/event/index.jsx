@@ -95,7 +95,7 @@ const Event = () => {
           const newGuildAcls = await fetchGuildAcls(state.firebase, guild)
 
           if (newGuildAcls.length > 0) {
-            const aclRoles = event.sales
+            const aclRoles = event.ticket_types
               .map(sale => {
                 const acl = newGuildAcls.find(guild_acl => guild_acl.ticket_type_index === sale.ticket_type_index)
 
@@ -142,7 +142,7 @@ const Event = () => {
   const onSubmit = async () => {
     setButtonLoading(true)
     const updatedGuildAcls = await Promise.all(
-      event?.sales.map(async (sale, ticket_type_index) => {
+      event?.ticket_types.map(async (sale, ticket_type_index) => {
         const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
         const roleIds = roles[ticket_type_index].map(role => role.id)
 
@@ -177,7 +177,7 @@ const Event = () => {
 
   const isSubmitDisabled = useMemo(() => {
     if (!isEmpty(event) && roles.length > 0) {
-      return event?.sales.every((sale, ticket_type_index) => {
+      return event?.ticket_types.every((sale, ticket_type_index) => {
         const guildAclIndex = guildAcls?.findIndex(g => g?.ticket_type_index === ticket_type_index)
         const roleIds = roles[ticket_type_index].map(role => role.id)
 
@@ -271,7 +271,7 @@ const Event = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {event.sales?.map(sale => (
+            {event.ticket_types?.map(sale => (
               <TableRow key={sale.ticket_type_index}>
                 <TableCell>
                   <Typography variant='body1'>{sale.ticket_type_name}</Typography>

@@ -2405,14 +2405,18 @@
   dependencies:
     "@ppoliani/im-record" "^2.0.0"
 
-"@ticketland-io/sui-wallet@file:../wallet/packages/sui-wallet":
+"@ticketland-io/sui-wallet@^0.1.0":
   version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/sui-wallet/0.1.0/be09b124b958ae0498d298b66711728f29489410#be09b124b958ae0498d298b66711728f29489410"
+  integrity sha512-5pf+126MGVIb57wgV88KYHbJ0eXESX9F4thVLzzoiHZrxghUFNRrXjLbZV0YMgu/e0rBor4lGGWOCTy8w1J0sw==
   dependencies:
     "@mysten/sui.js" "^0.36.0"
     "@ppoliani/im-record" "^2.0.0"
     "@ticketland-io/indexdb-storage" "^0.1.0"
     "@ticketland-io/web-enclave" "^0.1.0"
     ed25519-hd-key "^1.3.0"
+    keccak256 "^1.0.6"
+    tweetnacl "^1.0.3"
 
 "@ticketland-io/ticket-verification-js@0.1.9":
   version "0.1.9"
@@ -2430,8 +2434,10 @@
   resolved "https://npm.pkg.github.com/download/@ticketland-io/wallet-common/0.1.0/0f40903c12340b1a6e4acbb562b41c8f86b62f9a#0f40903c12340b1a6e4acbb562b41c8f86b62f9a"
   integrity sha512-xG7VVFl1OwMtZEJm6pAqH58/ZKT336PyaIFK+DRS9XeBUA7c+h+zgdKhoV3OrYyxt6NxU9IZwT8Cu+/jghaMDg==
 
-"@ticketland-io/wallet-core@file:../wallet/packages/core":
-  version "0.1.0"
+"@ticketland-io/wallet-core@^0.2.0":
+  version "0.2.0"
+  resolved "https://npm.pkg.github.com/download/@ticketland-io/wallet-core/0.2.0/2d743cb5444b9f67638822901de0d3df171d80ae#2d743cb5444b9f67638822901de0d3df171d80ae"
+  integrity sha512-HmzsO/Hs8yKfrht63XplhhwBrB7utcomnjoD9QBOviW++jtkRfzfe4PzjJj4f1qGjoqA0d4pbK/o36DD6V0y+g==
   dependencies:
     "@ppoliani/im-record" "^2.0.0"
     "@ticketland-io/wallet-common" "^0.1.0"
